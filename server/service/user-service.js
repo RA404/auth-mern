@@ -19,13 +19,22 @@ class UserService {
       password: hashPassword,
       activationLink,
     });
-    await mailService.sendActivationMail(email, `${process.env.API_URL}/api/v1/${activationLink}`);
+    await mailService.sendActivationMail(email, `${process.env.API_URL}/api/v1/activate/${activationLink}`);
 
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({...userDto});
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
 
     return {...tokens, user: userDto}
+  }
+
+  async activate(activationLink) {
+    const user = await UserModel.findOne({ activationLink });
+    if (!user) {
+        throw new Error('The activation link is incorrect')
+    }
+    user.isActivated = true;
+    await user.save();
   }
 }
 
