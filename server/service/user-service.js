@@ -1,13 +1,13 @@
 const UserModel = require("../models/user-model");
 const bcrypt = require("bcrypt");
-const uuid = requirei("uuid");
+const uuid = require("uuid");
 const mailService = require("./mail-service");
 const tokenService = require("./token-service");
 const UserDto = require("../dto/user-dto");
 
 
 class UserService {
-  async reqistration({ email, password }) {
+  async reqistration(email, password) {
     const condidate = await UserModel.findOne({ email });
     if (condidate) {
       throw new Error("This user already exist. Please login.");

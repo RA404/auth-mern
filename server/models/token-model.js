@@ -5,4 +5,4 @@ const TokenSchema = new Schema({
     refreshToken: {type: String, require: true},
 });
 
-module.exports = UserSchema('Token', TokenSchema);
+module.exports = model('Token', TokenSchema);
