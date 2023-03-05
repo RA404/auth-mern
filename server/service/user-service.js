@@ -5,6 +5,7 @@ const mailService = require("./mail-service");
 const tokenService = require("./token-service");
 const UserDto = require("../dto/user-dto");
 const ApiError = require("../exceptions/api-error");
+const userModel = require("../models/user-model");
 
 class UserService {
   async reqistration(email, password) {
@@ -38,6 +39,27 @@ class UserService {
     }
     user.isActivated = true;
     await user.save();
+  }
+
+  async login(email, password) {
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      throw ApiError.BadRequest(
+        "Please provide a valid email address and password."
+      );
+    }
+    const isPassEquals = await bcrypt.compare(password, user.password);
+    if (!isPassEquals) {
+      throw ApiError.BadRequest(
+        "Please provide a valid email address and password."
+      );
+    }
+
+    const userDto = new UserDto(user);
+    const tokens = tokenService.generateTokens({ ...userDto });
+    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+
+    return { ...tokens, user: userDto };
   }
 }
 
