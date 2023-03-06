@@ -20,7 +20,9 @@ const App: FC = () => {
     try {
       const response = await UserService.fetchUsers();
       setUsers(response.data);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   if (store.isLoading) {
@@ -29,14 +31,21 @@ const App: FC = () => {
 
   if (!store.isAuth) {
     return (
+      <div>
         <LoginForm />
+        <button onClick={getUsers}>Get all users</button>
+      </div>
     );
   }
 
   return (
     <div>
       <h2>{store.isAuth ? `Hello ${store.user.email}` : `Please authorize`}</h2>
-      <h2>{store.user.isActivated ? 'email confirmed' : 'Please confirm your email'}</h2>
+      <h2>
+        {store.user.isActivated
+          ? "email confirmed"
+          : "Please confirm your email"}
+      </h2>
       <button onClick={() => store.logout()}>Log Out</button>
       <div>
         <button onClick={getUsers}>Get all users</button>
