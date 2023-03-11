@@ -42,7 +42,7 @@ class UserService {
   }
 
   async login(email, password) {
-    const user = await userModel.findOne({ email });
+    const user = await userModel.findUserByCredentials(email, password)
     if (!user) {
       throw ApiError.BadRequest(
         "Please provide a valid email address and password."
