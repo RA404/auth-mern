@@ -4,6 +4,7 @@ import LoginForm from "./components/LoginForm";
 import { observer } from "mobx-react-lite";
 import UserService from "./services/UserService";
 import { IUser } from "./models/IUser";
+import './App.css';
 
 const App: FC = () => {
   const { store } = useContext(Context);

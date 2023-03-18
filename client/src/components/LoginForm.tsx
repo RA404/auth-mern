@@ -24,19 +24,32 @@ const LoginForm: FC = () => {
   const formHeader: CSS.Properties = {
     boxSizing: "border-box",
     width: "350px",
-    margin: "5px",
+    margin: "5px 5px 15px 5px",
     textAlign: "center",
   };
 
   const formInput: CSS.Properties = {
     boxSizing: "border-box",
-    width: "340px",
-    margin: "5px",
+    width: "330px",
+    margin: "10px",
+    padding: "5px",
+    height: "40px"
   };
 
   const formButton: CSS.Properties = {
     boxSizing: "border-box",
     margin: "5px",
+    border: "0",
+    borderRadius: "10px",
+    height: "44px",
+    color: "#fff",
+    fontSize: "15px",
+    lineHeight: "20px",
+    backgroundColor: "#2F71E5",
+    width: "168px",
+    padding: 0,
+    boxShadow: "0px 5px 15px rgba(14, 26, 57, 0.2)",
+    cursor: "pointer",
   };
 
   const formOverlay: CSS.Properties = {
