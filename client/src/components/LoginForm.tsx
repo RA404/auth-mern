@@ -1,12 +1,24 @@
-import React, { FC, useContext, useState } from "react";
+import React, { FC, useContext, useState, ReactNode } from "react";
 import { Context } from "../index";
 import { observer } from "mobx-react-lite";
 import CSS from "csstype";
 
-const LoginForm: FC = () => {
+interface ModalType {
+  children?: ReactNode;
+  isOpen: boolean;
+  toggle: () => void;
+  isSignUpForm: boolean;
+}
+
+const LoginForm: FC<ModalType> = (props: ModalType) => {
   const [email, setEmail] = useState<string>("");
+  const [isSignUpForm, setSignUpForm] = useState<boolean>(props.isSignUpForm);
   const [password, setPassword] = useState<string>("");
   const { store } = useContext(Context);
+
+  const toggleFormType = () => {
+    setSignUpForm(!isSignUpForm);
+  };
 
   const formContainer: CSS.Properties = {
     display: "flex",
@@ -33,7 +45,7 @@ const LoginForm: FC = () => {
     width: "330px",
     margin: "10px",
     padding: "5px",
-    height: "40px"
+    height: "40px",
   };
 
   const formButton: CSS.Properties = {
@@ -52,6 +64,18 @@ const LoginForm: FC = () => {
     cursor: "pointer",
   };
 
+  const formLink: CSS.Properties = {
+    boxSizing: "border-box",
+    margin: "5px",
+    border: "0",
+    color: "#2F71E5",
+    fontSize: "15px",
+    lineHeight: "20px",
+    backgroundColor: "#fff",
+    padding: 0,
+    cursor: "pointer",
+  };
+
   const formOverlay: CSS.Properties = {
     top: 0,
     position: "fixed",
@@ -60,35 +84,71 @@ const LoginForm: FC = () => {
     background: "rgba(0, 0, 0, 0.5)",
   };
 
+  const flexRowContainer: CSS.Properties = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+  };
+
   return (
-    <div style={formOverlay}>
-      <div style={formContainer}>
-        <h2 style={formHeader}>Log-in form</h2>
-        <input
-          style={formInput}
-          value={email}
-          type="text"
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          style={formInput}
-          value={password}
-          type="password"
-          placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button style={formButton} onClick={() => store.login(email, password)}>
-          Log In
-        </button>
-        <button
-          style={formButton}
-          onClick={() => store.registration(email, password)}
-        >
-          Create new account
-        </button>
-      </div>
-    </div>
+    <React.Fragment>
+      {props.isOpen && (
+        <div style={formOverlay} onClick={props.toggle}>
+          <div style={formContainer} onClick={(e) => e.stopPropagation()}>
+            <h2 style={formHeader}>
+              {isSignUpForm ? "Sign Up Form" : "Log in Form"}
+            </h2>
+            <input
+              style={formInput}
+              value={email}
+              type="text"
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              style={formInput}
+              value={password}
+              type="password"
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            {isSignUpForm ? (
+              <>
+                <button
+                  style={formButton}
+                  onClick={() => store.registration(email, password)}
+                >
+                  Create new account
+                </button>
+                <div style={flexRowContainer}>
+                  <p>Already have an account?</p>
+                  <button style={formLink} onClick={toggleFormType}>
+                    Log in
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <button style={formLink}>Forgot password?</button>
+                <button
+                  style={formButton}
+                  onClick={() => store.login(email, password)}
+                >
+                  Log In
+                </button>
+                <div style={flexRowContainer}>
+                  <p>Don't have an accaunt?</p>
+                  <button style={formLink} onClick={toggleFormType}>
+                    Sign Up
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+    </React.Fragment>
   );
 };
 
