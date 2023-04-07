@@ -1,16 +1,16 @@
 import React, { FC, useContext, useEffect, useState } from "react";
 import { Context } from "./index";
-import LoginForm from "./components/LoginForm";
+import AuthForm from "./components/AuthForm";
 import { observer } from "mobx-react-lite";
 import UserService from "./services/UserService";
 import { IUser } from "./models/IUser";
-import useModal from "./hooks/useModal";
 import "./App.css";
+
 
 const App: FC = () => {
   const { store } = useContext(Context);
   const [users, setUsers] = useState<IUser[]>([]);
-  const { isOpen, toggle } = useModal();
+  
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -34,9 +34,9 @@ const App: FC = () => {
   if (!store.isAuth) {
     return (
       <div>
-        <button onClick={toggle}>Sign Up</button>
-        <button onClick={toggle}>Log In</button>
-        <LoginForm isOpen={isOpen} toggle={toggle} isSignUpForm={true} />
+        <button onClick={() => {store.openAuthForm('register', true)}}>Sign Up</button>
+        <button onClick={() => {store.openAuthForm('login', true)}}>Log In</button>
+        <AuthForm />
       </div>
     );
   }

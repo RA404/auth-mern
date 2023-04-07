@@ -9,6 +9,8 @@ export default class Store {
   user = {} as IUser;
   isAuth = false;
   isLoading = false;
+  authType = 'register';
+  authModalOpened = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -25,6 +27,10 @@ export default class Store {
   setLoading(bool: boolean) {
     this.isLoading = bool;
   }
+
+  // setAuthModalType(authType: "login" | "register") {
+  //   this.authType = authType;
+  // }
 
   async login(email: string, password: string) {
     try {
@@ -76,5 +82,10 @@ export default class Store {
     } finally {
         this.setLoading(false);
     }
+  }
+
+  openAuthForm(authType: "login" | "register", authModalOpened: boolean) {
+    this.authType = authType;
+    this.authModalOpened = authModalOpened;
   }
 }
