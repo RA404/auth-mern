@@ -3,7 +3,7 @@
 ## About
 MERN stack authentication. There is client and server part. 
 
-The project has functionalities:
+The project has functionality:
 - Login
 - Registration
 - Email confirmation by link
