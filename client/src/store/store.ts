@@ -28,10 +28,6 @@ export default class Store {
     this.isLoading = bool;
   }
 
-  // setAuthModalType(authType: "login" | "register") {
-  //   this.authType = authType;
-  // }
-
   async login(email: string, password: string) {
     try {
       const response = await AuthService.login(email, password);
