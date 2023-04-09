@@ -1,5 +1,7 @@
 # Auth MERN stack
 
+https://user-images.githubusercontent.com/61162669/230776798-b8a73c17-3c65-45cb-9f22-7954ba8287bf.mp4
+
 ## About
 MERN stack authentication. There is client and server part. 
 
